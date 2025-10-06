@@ -1,6 +1,10 @@
 package dev.lundberg.acs;
 
 public class Book {
+
+    public static final int MAX_BORROWED_DAYS = 7;
+    public static final int FINE_PER_DAY = 20;
+
     private String name;
     private String genre;
     private String author;
@@ -16,15 +20,15 @@ public class Book {
     }
 
     public int checkLateFee() {
-        if (daysBorrowed >= 7) {
+        if (daysBorrowed > MAX_BORROWED_DAYS) {
             System.out.println("The book is " + daysBorrowed + " days late");
-            return daysBorrowed * 20;
+            return (daysBorrowed - MAX_BORROWED_DAYS) * FINE_PER_DAY;
         }
         return 0;
     }
 
     public void extendTime() {
-        this.daysBorrowed += -7;
+        this.daysBorrowed = 0;
     }
 
     public void advanceDay() {
