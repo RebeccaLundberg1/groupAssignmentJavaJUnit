@@ -118,9 +118,10 @@ public class Library {
 
     public ArrayList<Book> listAvailableBooks() {
         for (int i = 0; i < booksInStockList.size(); i++) {
-            System.out.println("Title: " + booksInStockList.get(i).getName());
+            if (!booksInStockList.get(i).isBorrowed()) {
+                System.out.println("Title: " + booksInStockList.get(i).getName());
+            }
         }
-
         return booksInStockList;
     }
 
@@ -145,5 +146,9 @@ public class Library {
             Book book = new Book("Tempelriddaren", "Historical Fiction", "Jan Guillou");
             booksInStockList.add(book);
         }
-    }  
+    }
+
+    public ArrayList<Book> getBooksInStockList() {
+        return booksInStockList;
+    }
 }
