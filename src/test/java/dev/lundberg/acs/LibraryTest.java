@@ -1,11 +1,37 @@
 package dev.lundberg.acs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.io.PrintStream;
 
 import org.junit.Test;
 
 public class LibraryTest {
+    
+    Library library;
+
+    @org.junit.Before
+    public void setUp() {
+        library = new Library();
+    }
+
+    @Test
+    public void testBorrowBook() {
+        // lånar en bok som finns i biblioteket
+        ArrayList<Book> borrowedBooks = library.borrowBook("Ondskan");
+        boolean found = false;
+
+        // Kontrollera att Ondskan finns i lånelistan
+        for (Book book : borrowedBooks) {
+            if (book.getName().equalsIgnoreCase("Ondskan")) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue("Ondskan", found);
+    }
+
     @Test
     public void listAvailableBooks_printAllAvailableBooksInStock() {
         Library library = new Library();
@@ -55,3 +81,4 @@ public class LibraryTest {
         System.setOut(System.out);
     }
 }
+
