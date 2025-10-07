@@ -82,7 +82,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void testListBorrowedBooksBy() {
+    public void listBorrowedBooksByAuthor() {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
@@ -101,6 +101,45 @@ public class LibraryTest {
         sb.append(System.lineSeparator());
         for(int i = 0; i < library.getBorrowedBooksList().size(); i++) {
             sb.append(library.getBorrowedBooksList().get(i).getAuthor());
+            sb.append(System.lineSeparator());
+        }
+        sb.append("> ");
+        for(int i = 0; i < library.getBorrowedBooksList().size(); i++) {
+            if(library.getBorrowedBooksList().get(i).getAuthor().equals("J.K Rowling")) {
+                sb.append("Title: ");
+                sb.append(library.getBorrowedBooksList().get(i).getName());
+                sb.append(System.lineSeparator());
+            }
+        }
+
+        String expected = sb.toString().replace("\r\n", "\n").trim();
+        String actual = outputStream.toString().replace("\r\n", "\n").trim();
+        assertEquals(expected, actual);
+
+        System.setOut(System.out);
+        System.setIn(System.in);
+    }
+
+    @Test
+    public void listBorrowedBooksByGenre() {
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        String simulatedInput = "Fantasy\n";
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+
+        Library library = new Library();
+        library.borrowBook("Harry Potter");
+        library.borrowBook("Ondskan");
+        library.borrowBook("Tempelriddaren");
+        
+        library.listBorrowedBooksBy(false);
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("Genres: ");
+        sb.append(System.lineSeparator());
+        for(int i = 0; i < library.getBorrowedBooksList().size(); i++) {
+            sb.append(library.getBorrowedBooksList().get(i).getGenre());
             sb.append(System.lineSeparator());
         }
         sb.append("> ");
