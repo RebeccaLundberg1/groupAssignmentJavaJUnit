@@ -87,7 +87,7 @@ public class Library {
             String input = scanner.nextLine();
             for (int i = 0; i < borrowedBooksList.size(); i++) {
                 Book book = borrowedBooksList.get(i);
-                if (book.getAuthor() == input) {
+                if (book.getAuthor().equals(input)) {
                     System.out.println("Title: " + book.getName());
                 }
             }
@@ -103,7 +103,7 @@ public class Library {
             String input = scanner.nextLine();
             for (int i = 0; i < borrowedBooksList.size(); i++) {
                 Book book = borrowedBooksList.get(i);
-                if (book.getGenre() == input) {
+                if (book.getGenre().equals(input)) {
                     System.out.println("Title: " + book.getName());
                 }
             }
@@ -111,8 +111,8 @@ public class Library {
     }
 
     public void advanceDay() {
-        for (int i = 0; i < booksInStockList.size(); i++) {
-            booksInStockList.get(i).advanceDay();
+        for (int i = 0; i < borrowedBooksList.size(); i++) {
+            borrowedBooksList.get(i).advanceDay();
         }
     }
 
@@ -150,5 +150,9 @@ public class Library {
 
     public ArrayList<Book> getBooksInStockList() {
         return booksInStockList;
+    }
+
+    public ArrayList<Book> getBorrowedBooksList() {
+        return borrowedBooksList;
     }
 }
