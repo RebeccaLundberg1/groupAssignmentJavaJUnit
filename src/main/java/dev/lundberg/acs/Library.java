@@ -24,6 +24,8 @@ public class Library {
             Book book = booksInStockList.get(i);
             if (book.getName().equalsIgnoreCase(title)) {
                 this.borrowedBooksList.add(book);
+                book.borrowBook();
+                break;
             }
         }
         System.out.println();
@@ -40,6 +42,7 @@ public class Library {
             if (book.getName().equalsIgnoreCase(title)) {
                 int fee = book.checkLateFee();
                 totalLateFee += fee;
+                book.returnBook();
             }
         }
         System.out.println("You owe us " + totalLateFee + " kr in late fees.");

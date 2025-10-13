@@ -1,6 +1,8 @@
 package dev.lundberg.acs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -11,26 +13,88 @@ public class LibraryTest {
     
     Library library;
 
+    Book book;
+    Book book2;
+    String bookTitle;
+    String bookTitle2;
+
     @org.junit.Before
     public void setUp() {
         library = new Library();
+        book = library.getBooksInStockList().get(0);
+        bookTitle = book.getName();
+        book2 = library.getBooksInStockList().get(9);
+        bookTitle2 = book2.getName();
     }
 
     @Test
-    public void testBorrowBook() {
+    public void BorrowBook_isBorrowedShouldBeTrueWhenBorrowed() {
+        library.borrowBook(bookTitle);
+        assertTrue(book.isBorrowed());
+    }
 
+    @Test
+    public void returnBook_isBorrowedShouldBeFalseWhenReturned() {
+        library.borrowBook(bookTitle);
+        library.returnBook(bookTitle);
+
+        assertFalse(book.isBorrowed());
+    }
+
+    @Test
+    public void borrowBook_checkBookAddsToBorrowBooksArray() {
         // lånar en bok som finns i biblioteket
-        ArrayList<Book> borrowedBooks = library.borrowBook("Ondskan");
+        ArrayList<Book> borrowedBooks = library.borrowBook(bookTitle);
         boolean found = false;
 
         // Kontrollera att Ondskan finns i lånelistan
         for (Book book : borrowedBooks) { 
-            if (book.getName().equalsIgnoreCase("Ondskan")) {
+            if (book.getName().equalsIgnoreCase(bookTitle)) {
                 found = true;
                 break;
             }
         }
-        assertTrue("Ondskan", found);
+        assertTrue(found);
+    }
+
+    @Test
+    public void returnBook_noLateFeeWhenReturnedOnTime() {
+        library.borrowBook(bookTitle);
+
+        int lateFee = library.returnBook(bookTitle);
+        assertEquals(0, lateFee);
+    }
+
+    @Test
+    public void returnBook_fineWhenReturnedThreeDaysLate_resultSixty() {
+        int daysBorrowed = Book.MAX_BORROWED_DAYS + 3;
+
+        library.borrowBook(bookTitle);
+
+        for(int i = 0; i < daysBorrowed; i++) {
+            library.advanceDay();
+        }
+
+        int lateFee = library.returnBook(bookTitle);
+        assertEquals(60, lateFee);
+    }
+
+    @Test
+    public void extendTime_daysResetToZero_ifBookIsBorrowed() {
+        library.borrowBook(bookTitle);
+        library.advanceDay();
+        library.advanceDay();
+        library.advanceDay();
+        assertEquals(0, library.extendTime(bookTitle));
+    }
+
+    @Test
+    public void extendTime_resultInIntegerMinValue_ifBookIsNotBorrowed() {
+        library.borrowBook(bookTitle);
+        library.advanceDay();
+        library.advanceDay();
+        library.advanceDay();
+        assertEquals(Integer.MIN_VALUE, library.extendTime(bookTitle2));
     }
 
     @Test
@@ -157,24 +221,6 @@ public class LibraryTest {
 
         System.setOut(System.out);
         System.setIn(System.in);
-    }
-
-    @Test
-    public void extendTime_daysResetToZero_ifBookIsBorrowed() {
-        library.borrowBook("Harry Potter");
-        library.advanceDay();
-        library.advanceDay();
-        library.advanceDay();
-        assertEquals(0, library.extendTime("Harry Potter"));
-    }
-
-    @Test
-    public void extendTime_resultInIntegerMinValue_ifBookIsNotBorrowed() {
-        library.borrowBook("Harry Potter");
-        library.advanceDay();
-        library.advanceDay();
-        library.advanceDay();
-        assertEquals(Integer.MIN_VALUE, library.extendTime("Ondskan"));
     }
 
     @Test
