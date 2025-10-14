@@ -99,7 +99,6 @@ public class LibraryTest {
 
     @Test
     public void listAvailableBooks_printAllAvailableBooksInStock() {
-
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         
@@ -120,6 +119,7 @@ public class LibraryTest {
     }
 
     @Test
+    
     public void listAvailableBooks_printAllAvailableBooksInStock_afterBorrowingFiveBooks() {
 
         for(int i = 0; i < 5; i++) {
