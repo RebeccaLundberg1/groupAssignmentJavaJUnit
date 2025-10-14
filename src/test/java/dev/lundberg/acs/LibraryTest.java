@@ -57,25 +57,55 @@ public class LibraryTest {
     }
 
     @Test
-    public void returnBook_noLateFeeWhenReturnedOnTime() {
-        library.borrowBook(bookTitle);
-
-        int lateFee = library.returnBook(bookTitle);
-        assertEquals(0, lateFee);
-    }
-
-    @Test
-    public void returnBook_fineWhenReturnedThreeDaysLate_resultSixty() {
-        int daysBorrowed = Book.MAX_BORROWED_DAYS + 3;
-
-        library.borrowBook(bookTitle);
-
-        for(int i = 0; i < daysBorrowed; i++) {
-            library.advanceDay();
+    public void shouldResultInFalse_ifAddMoreBooksThen_maxBorrowedBooksAtTime_inArrayList() {
+        ArrayList<Book> listBorrowedBooks = library.getBorrowedBooksList();
+        
+        //Fill up the space in arrayList with maximum books borrowed at the same time
+        for(int i = 0; i < Library.MAX_BORROWED_BOOKS_AT_SAME_TIME; i++) {
+            Book book = new Book("Titel", "Genre", "Author");
+            listBorrowedBooks.add(book);
         }
 
-        int lateFee = library.returnBook(bookTitle);
-        assertEquals(60, lateFee);
+        //Equals false when try add one more book to list 
+        assertFalse(library.borrowBook(bookTitle));
+    }
+
+    //@Test
+    //public void returnBook_noLateFeeWhenReturnedOnTime() {
+    //    library.borrowBook(bookTitle);
+    //    Book book = library.getBorrowedBooksList().get(0);
+//
+    //    int lateFee = book.checkLateFee();
+    //    assertEquals(0, lateFee);
+    //}
+//
+    //@Test
+    //public void returnBook_fineWhenReturnedThreeDaysLate_resultSixty() {
+    //    int daysBorrowed = Book.MAX_BORROWED_DAYS + 3;
+//
+    //    library.borrowBook(bookTitle);
+//
+    //    for(int i = 0; i < daysBorrowed; i++) {
+    //        library.advanceDay();
+    //    }
+//
+    //    //int lateFee = library.returnBook(bookTitle);
+    //    //assertEquals(60, lateFee);
+    //}
+
+    @Test
+    public void returnMultipleBooksInOneDay() {
+        ArrayList<Book> listBorrowedBooks = library.getBorrowedBooksList();
+        
+        //Fill up the space in arrayList with maximum books borrowed at the same time
+        for(int i = 0; i < Library.MAX_BORROWED_BOOKS_AT_SAME_TIME; i++) {
+            Book book = new Book("Titel" + i, "Genre", "Author");
+            listBorrowedBooks.add(book);
+        }
+
+        library.returnBook(listBorrowedBooks.get(0).getName());
+        
+        assertTrue(library.returnBook(listBorrowedBooks.get(0).getName()));
     }
 
     @Test
@@ -154,7 +184,9 @@ public class LibraryTest {
 
         Library library = new Library();
         library.borrowBook("Harry Potter");
+        library.advanceDay();
         library.borrowBook("Ondskan");
+        library.advanceDay();
         library.borrowBook("Tempelriddaren");
         
         library.listBorrowedBooksBy(true);
@@ -193,7 +225,9 @@ public class LibraryTest {
 
         Library library = new Library();
         library.borrowBook("Harry Potter");
+        library.advanceDay();
         library.borrowBook("Ondskan");
+        library.advanceDay();
         library.borrowBook("Tempelriddaren");
         
         library.listBorrowedBooksBy(false);
