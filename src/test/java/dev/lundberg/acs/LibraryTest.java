@@ -44,11 +44,11 @@ public class LibraryTest {
     @Test
     public void borrowBook_checkBookAddsToBorrowBooksArray() {
         // lånar en bok som finns i biblioteket
-        ArrayList<Book> borrowedBooks = library.borrowBook(bookTitle);
+        library.borrowBook(bookTitle);
         boolean found = false;
 
-        // Kontrollera att Ondskan finns i lånelistan
-        for (Book book : borrowedBooks) { 
+        // Kontrollera att boken i lånelistan
+        for (Book book : library.getBorrowedBooksList()) { 
             if (book.getName().equalsIgnoreCase(bookTitle)) {
                 found = true;
                 break;
