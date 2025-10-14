@@ -1,6 +1,4 @@
 package dev.lundberg.acs;
-
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Scanner;
 
