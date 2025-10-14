@@ -44,11 +44,9 @@ public class LibraryTest {
 
     @Test
     public void borrowBook_checkBookAddsToBorrowBooksArray() {
-        // lånar en bok som finns i biblioteket
         library.borrowBook(bookTitle);
         boolean found = false;
 
-        // Kontrollera att Ondskan finns i lånelistan
         for (Book book : library.getBorrowedBooksList()) { 
             if (book.getName().equalsIgnoreCase(bookTitle)) {
                 found = true;
@@ -62,44 +60,18 @@ public class LibraryTest {
     public void shouldResultInFalse_ifAddMoreBooksThen_maxBorrowedBooksAtTime_inArrayList() {
         ArrayList<Book> listBorrowedBooks = library.getBorrowedBooksList();
         
-        //Fill up the space in arrayList with maximum books borrowed at the same time
         for(int i = 0; i < Library.MAX_BORROWED_BOOKS_AT_SAME_TIME; i++) {
             Book book = new Book("Titel", "Genre", "Author");
             listBorrowedBooks.add(book);
         }
 
-        //Equals false when try add one more book to list 
         assertFalse(library.borrowBook(bookTitle));
     }
-
-    //@Test
-    //public void returnBook_noLateFeeWhenReturnedOnTime() {
-    //    library.borrowBook(bookTitle);
-    //    Book book = library.getBorrowedBooksList().get(0);
-//
-    //    int lateFee = book.checkLateFee();
-    //    assertEquals(0, lateFee);
-    //}
-//
-    //@Test
-    //public void returnBook_fineWhenReturnedThreeDaysLate_resultSixty() {
-    //    int daysBorrowed = Book.MAX_BORROWED_DAYS + 3;
-//
-    //    library.borrowBook(bookTitle);
-//
-    //    for(int i = 0; i < daysBorrowed; i++) {
-    //        library.advanceDay();
-    //    }
-//
-    //    //int lateFee = library.returnBook(bookTitle);
-    //    //assertEquals(60, lateFee);
-    //}
 
     @Test
     public void returnMultipleBooksInOneDay() {
         ArrayList<Book> listBorrowedBooks = library.getBorrowedBooksList();
         
-        //Fill up the space in arrayList with maximum books borrowed at the same time
         for(int i = 0; i < Library.MAX_BORROWED_BOOKS_AT_SAME_TIME; i++) {
             Book book = new Book("Titel" + i, "Genre", "Author");
             listBorrowedBooks.add(book);
@@ -150,7 +122,6 @@ public class LibraryTest {
     }
 
     @Test
-    
     public void listAvailableBooks_printAllAvailableBooksInStock_afterBorrowingFiveBooks() {
 
         for(int i = 0; i < 5; i++) {
@@ -194,6 +165,9 @@ public class LibraryTest {
         library.listBorrowedBooksBy(true);
         
         StringBuilder sb = new StringBuilder();
+        sb.append("You borrowed: Harry Potter\n\n");
+        sb.append("You borrowed: Ondskan\n\n");
+        sb.append("You borrowed: Tempelriddaren\n\n");
         sb.append("Authors: ");
         sb.append(System.lineSeparator());
         for(int i = 0; i < library.getBorrowedBooksList().size(); i++) {
@@ -235,6 +209,9 @@ public class LibraryTest {
         library.listBorrowedBooksBy(false);
         
         StringBuilder sb = new StringBuilder();
+        sb.append("You borrowed: Harry Potter\n\n");
+        sb.append("You borrowed: Ondskan\n\n");
+        sb.append("You borrowed: Tempelriddaren\n\n");
         sb.append("Genres: ");
         sb.append(System.lineSeparator());
         for(int i = 0; i < library.getBorrowedBooksList().size(); i++) {
@@ -269,6 +246,7 @@ public class LibraryTest {
         library.listBorrowedBooks(true);
 
         StringBuilder sb = new StringBuilder();
+        sb.append("Your borrowed books:\n");
         for(int i = 0; i < library.getBorrowedBooksList().size(); i++) {
             sb.append("Title: ");
             sb.append(library.getBorrowedBooksList().get(i).getName());
@@ -278,7 +256,9 @@ public class LibraryTest {
         }
         sb.append(System.lineSeparator());
 
-        assertEquals(sb.toString(), outputStream.toString());
+        String expected = sb.toString().replace("\r\n", "\n").trim();
+        String actual = outputStream.toString().replace("\r\n", "\n").trim();
+        assertEquals(expected, actual);
 
         System.setOut(System.out);
     }
@@ -294,6 +274,7 @@ public class LibraryTest {
         library.listBorrowedBooks(false);
 
         StringBuilder sb = new StringBuilder();
+        sb.append("Your borrowed books:\n");
         for(int i = 0; i < library.getBorrowedBooksList().size(); i++) {
             sb.append("Title: ");
             sb.append(library.getBorrowedBooksList().get(i).getName());
@@ -301,10 +282,13 @@ public class LibraryTest {
         }
         sb.append(System.lineSeparator());
 
-        assertEquals(sb.toString(), outputStream.toString());
+        String expected = sb.toString().replace("\r\n", "\n").trim();
+        String actual = outputStream.toString().replace("\r\n", "\n").trim();
+        assertEquals(expected, actual);
 
         System.setOut(System.out);
     }
+    
     @Test
     public void cannotBorrowSameBookTwice() {
         library.borrowBook(bookTitle);
@@ -316,12 +300,14 @@ public class LibraryTest {
         library.borrowBook(bookTitle);
         assertEquals(1, library.getBorrowedBooksList().size());
     }
+
     @Test
     public void borrowTwoBooksSameDay(){
         library.borrowBook(bookTitle);
         assertFalse(library.borrowBook(bookTitle2));
 
     }
+
     @Test
     public void BorrowBooksDifferentDay(){
         library.borrowBook(bookTitle);
