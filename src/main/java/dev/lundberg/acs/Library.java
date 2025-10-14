@@ -18,7 +18,7 @@ public class Library {
         stockLibrary();
     }
 
-    public boolean borrowBook(String title) {
+    public Boolean borrowBook(String title) {
         if(isBorrowBookAvailable(title)) {
             for (int i = 0; i < booksInStockList.size(); i++) {
                 Book book = booksInStockList.get(i);
@@ -30,7 +30,6 @@ public class Library {
             }
         }
         return false;
-        
     }
 
     private boolean isBorrowBookAvailable(String bookName) {
