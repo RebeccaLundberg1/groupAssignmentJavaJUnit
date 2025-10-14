@@ -9,6 +9,7 @@ public class Library {
 
     public static final boolean AUTHOR = true;
     public static final boolean GENRE = false;
+    public static final int MAX_BORROWED_BOOKS_AT_SAME_TIME = 5;
 
     public Library() {
         this.booksInStockList = new ArrayList<Book>();
@@ -17,17 +18,19 @@ public class Library {
         stockLibrary();
     }
 
-    public void borrowBook(String title) {
+    public boolean borrowBook(String title) {
         if(isBorrowBookAvailable(title)) {
             for (int i = 0; i < booksInStockList.size(); i++) {
                 Book book = booksInStockList.get(i);
                 if (book.getName().equalsIgnoreCase(title)) {
                     this.borrowedBooksList.add(book);
                     book.borrowBook();
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
+        
     }
 
     private boolean isBorrowBookAvailable(String bookName) {
@@ -50,7 +53,7 @@ public class Library {
         return true;
     }
 
-    public int returnBook(String title) {
+    public Boolean returnBook(String title) {
 
         int totalLateFee = 0;
 
@@ -60,12 +63,14 @@ public class Library {
                 int fee = book.checkLateFee();
                 totalLateFee += fee;
                 book.returnBook();
+                borrowedBooksList.remove(i);
+                return true;
             }
         }
         System.out.println("You owe us " + totalLateFee + " kr in late fees.");
         System.out.println();
 
-        return totalLateFee;
+        return false;
     }
 
     public ArrayList<Book> listBorrowedBooks(boolean includeDaysBorrowed) {
