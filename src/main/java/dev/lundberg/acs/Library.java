@@ -17,17 +17,18 @@ public class Library {
         stockLibrary();
     }
 
-    public void borrowBook(String title) {
+    public Boolean borrowBook(String title) {
         if(isBorrowBookAvailable(title)) {
             for (int i = 0; i < booksInStockList.size(); i++) {
                 Book book = booksInStockList.get(i);
                 if (book.getName().equalsIgnoreCase(title)) {
                     this.borrowedBooksList.add(book);
                     book.borrowBook();
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     private boolean isBorrowBookAvailable(String bookName) {
