@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.io.PrintStream;
 import org.junit.Test;
 
@@ -47,7 +46,7 @@ public class LibraryTest {
         library.borrowBook(bookTitle);
         boolean found = false;
 
-        // Kontrollera att boken i lånelistan
+        // Kontrollera att Ondskan finns i lånelistan
         for (Book book : library.getBorrowedBooksList()) { 
             if (book.getName().equalsIgnoreCase(bookTitle)) {
                 found = true;
@@ -270,7 +269,29 @@ public class LibraryTest {
 
         System.setOut(System.out);
     }
+    @Test
+    public void cannotBorrowSameBookTwice() {
+        library.borrowBook(bookTitle);
+        assertFalse(library.borrowBook(bookTitle));    
+    }
+
+    @Test
+    public void borrowOneBook_shouldResult_sizeOne(){
+        library.borrowBook(bookTitle);
+        assertEquals(1, library.getBorrowedBooksList().size());
+    }
+    @Test
+    public void borrowTwoBooksSameDay(){
+        library.borrowBook(bookTitle);
+        assertFalse(library.borrowBook(bookTitle2));
+
+    }
+    @Test
+    public void BorrowBooksDifferentDay(){
+        library.borrowBook(bookTitle);
+        library.advanceDay();
+        assertTrue(library.borrowBook(bookTitle2));
+    }
+    
 }
-
-
 
