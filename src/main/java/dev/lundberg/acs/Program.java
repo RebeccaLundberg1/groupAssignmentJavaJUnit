@@ -10,16 +10,20 @@ public class Program {
         library = new Library();
 
         while (true) {
-            System.out.println("Welcome to the library! \n" +
-                    "Press B to borrow a book \n" +
-                    "Press R to return a book \n" +
-                    "Press L to list all currently borrowed books \n" +
-                    "Press A to list all currently borrowed books by an author \n" +
-                    "Press G to list all currently borrowed books by genre \n" +
-                    "Press E to extend borrowing \n" +
-                    "Press Q to exit");
+            System.out.println("\n Welcome to the library! \n" +
+                    "--------------------------------------- \n" +
+                    "B. Borrow a book \n" +
+                    "R. Return a book \n" +
+                    "L. List all currently borrowed books \n" +
+                    "A. List all currently borrowed books by an author \n" +
+                    "G. List all currently borrowed books by genre \n" +
+                    "E. Extend borrowing \n" +
+                    "D. Go to new day \n" +
+                    "Q. Exit");
             System.out.print("> ");
             String input = scanner.nextLine();
+            System.out.println("");
+            
 
             switch (input.toUpperCase()) {
                 case "B":
@@ -39,13 +43,18 @@ public class Program {
                     break;
                 case "E":
                     extendTime();
+                    break;
+                case "D": 
+                    library.advanceDay();
+                    System.out.println("New day!");
+                    break;
                 case "Q":
+                    System.exit(0);
                     break;
                 default:
+                    System.out.println("Your menu choice doesn´t exists");
                     break;
             }
-
-            library.advanceDay();
         }
     }
 

@@ -25,27 +25,29 @@ public class Library {
                 if (book.getName().equalsIgnoreCase(title)) {
                     this.borrowedBooksList.add(book);
                     book.borrowBook();
+                    System.out.println("You borrowed: " + title + "\n");
                     return true;
                 }
             }
         }
+        System.out.println("The book " + title + "isn't found\n");
         return false;
     }
 
     private boolean isBorrowBookAvailable(String bookName) {
         if(borrowedBooksList.size() >= 5) {
-            System.out.println("Tyvärr, du har redan lånat 5 böcker");
+            System.out.println("Tyvärr, du har redan lånat 5 böcker \n");
             return false;
         }
 
         for(int i = 0; i < borrowedBooksList.size(); i++) {
             Book book = borrowedBooksList.get(i);
             if(book.getDaysBorrowed() == 0) {
-                System.out.println("Tyvärr, du har redan lånat en bok idag");
+                System.out.println("Tyvärr, du har redan lånat en bok idag \n");
                 return false;
             }
             if(book.getName().equals(bookName)) {
-                System.out.println("Tyvärr, du har redan lånat denna boken");
+                System.out.println("Tyvärr, du har redan lånat denna boken \n");
                 return false;
             }
         }
@@ -54,25 +56,28 @@ public class Library {
 
     public Boolean returnBook(String title) {
 
-        int totalLateFee = 0;
-
         for (int i = 0; i < borrowedBooksList.size(); i++) {
             Book book = borrowedBooksList.get(i);
             if (book.getName().equalsIgnoreCase(title)) {
                 int fee = book.checkLateFee();
-                totalLateFee += fee;
+                if(fee != 0) {
+                    System.out.println("You owe us " + fee + " kr in late fees.");
+                    System.out.println();
+                }
                 book.returnBook();
                 borrowedBooksList.remove(i);
+                System.out.println("Your book is returned");
+                System.out.println();
                 return true;
             }
         }
-        System.out.println("You owe us " + totalLateFee + " kr in late fees.");
+        System.out.println(title + " isn´t found in borrowed books list");
         System.out.println();
-
         return false;
     }
 
     public ArrayList<Book> listBorrowedBooks(boolean includeDaysBorrowed) {
+        System.out.println("Your borrowed books:");
         for (int i = 0; i < borrowedBooksList.size(); i++) {
             Book book = borrowedBooksList.get(i);
             System.out.print("Title: " + book.getName());
@@ -87,15 +92,23 @@ public class Library {
     }
 
     public int extendTime(String title) {
-
         for (int i = 0; i < borrowedBooksList.size(); i++) {
             Book book = borrowedBooksList.get(i);
             if (book.getName().equalsIgnoreCase(title)) {
+                int fee = book.checkLateFee();
+                if(fee != 0) {
+                    System.out.println("You owe us " + fee + " kr in late fees.");
+                    System.out.println();
+                }
                 book.extendTime();
+                System.out.println("Your book is extended");
+                System.out.println();
+
                 return book.getDaysBorrowed();
             }
         }
-
+        System.out.println(title + "doesn´t exists in borrowed books list");
+        System.out.println();
         return Integer.MIN_VALUE;
     }
 
