@@ -1,6 +1,4 @@
 package dev.lundberg.acs;
-
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,19 +17,37 @@ public class Library {
         stockLibrary();
     }
 
-    public ArrayList<Book> borrowBook(String title) {
-
-        for (int i = 0; i < booksInStockList.size(); i++) {
-            Book book = booksInStockList.get(i);
-            if (book.getName().equalsIgnoreCase(title)) {
-                this.borrowedBooksList.add(book);
-                book.borrowBook();
-                break;
+    public void borrowBook(String title) {
+        if(isBorrowBookAvailable(title)) {
+            for (int i = 0; i < booksInStockList.size(); i++) {
+                Book book = booksInStockList.get(i);
+                if (book.getName().equalsIgnoreCase(title)) {
+                    this.borrowedBooksList.add(book);
+                    book.borrowBook();
+                    break;
+                }
             }
         }
-        System.out.println();
+    }
 
-        return borrowedBooksList;
+    private boolean isBorrowBookAvailable(String bookName) {
+        if(borrowedBooksList.size() >= 5) {
+            System.out.println("Tyvärr, du har redan lånat 5 böcker");
+            return false;
+        }
+
+        for(int i = 0; i < borrowedBooksList.size(); i++) {
+            Book book = borrowedBooksList.get(i);
+            if(book.getDaysBorrowed() == 0) {
+                System.out.println("Tyvärr, du har redan lånat en bok idag");
+                return false;
+            }
+            if(book.getName().equals(bookName)) {
+                System.out.println("Tyvärr, du har redan lånat denna boken");
+                return false;
+            }
+        }
+        return true;
     }
 
     public int returnBook(String title) {
