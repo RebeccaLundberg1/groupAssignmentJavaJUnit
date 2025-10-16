@@ -31,7 +31,7 @@ public class BookTest {
     }
 
     @Test
-    public void extendTime_shouldResetToZeroDaysBorrowedToZero() {
+    public void extendTime_shouldResetDaysBorrowedToZero() {
         int daysBorrowed = 10;
         for(int i = 0; i < daysBorrowed; i++) {
             book.advanceDay();
@@ -46,7 +46,8 @@ public class BookTest {
         for(int i = 0; i < daysBorrowed; i++) {
             book.advanceDay();
         }
-        assertEquals((daysBorrowed - Book.MAX_BORROWED_DAYS) * Book.FINE_PER_DAY, book.checkLateFee());
+        assertEquals((daysBorrowed - Book.MAX_BORROWED_DAYS) * 
+            Book.FINE_PER_DAY, book.checkLateFee());
     }
 
     @Test
@@ -55,7 +56,8 @@ public class BookTest {
         for(int i = 0; i < daysBorrowed; i++) {
             book.advanceDay();
         }
-        assertEquals((daysBorrowed - Book.MAX_BORROWED_DAYS) * Book.FINE_PER_DAY, book.checkLateFee());
+        assertEquals((daysBorrowed - Book.MAX_BORROWED_DAYS) * 
+            Book.FINE_PER_DAY, book.checkLateFee());
     }
 
     @Test
@@ -74,18 +76,18 @@ public class BookTest {
     }
 
     @Test
-    public void IsBorrowed_shouldBeFalseWhenCreated() {
+    public void isBorrowed_shouldBeFalseWhenCreated() {
         assertFalse(book.isBorrowed());
     }
 
     @Test
-    public void BorrowBook_isBorrowedShouldBeTrueWhenBorrowed() {
+    public void borrowBook_isBorrowedShouldBeTrueWhenBorrowed() {
         book.borrowBook();
         assertTrue(book.isBorrowed());
     }
 
     @Test
-    public void ReturnBook_isBorrowedShouldBeFalseWhenReturned() {
+    public void returnBook_isBorrowedShouldBeFalseWhenReturned() {
         book.borrowBook();
         book.returnBook();
         assertFalse(book.isBorrowed());

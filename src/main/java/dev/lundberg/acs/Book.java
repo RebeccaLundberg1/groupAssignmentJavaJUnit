@@ -21,7 +21,8 @@ public class Book {
 
     public int checkLateFee() {
         if (daysBorrowed > MAX_BORROWED_DAYS) {
-            System.out.println("The book is " + (daysBorrowed - MAX_BORROWED_DAYS) + " days late");
+            System.out.println("The book is " + (daysBorrowed - MAX_BORROWED_DAYS) + 
+                " days late");
             return (daysBorrowed - MAX_BORROWED_DAYS) * FINE_PER_DAY;
         }
         return 0;
