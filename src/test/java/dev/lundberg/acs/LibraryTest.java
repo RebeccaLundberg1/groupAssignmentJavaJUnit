@@ -24,12 +24,17 @@ public class LibraryTest {
         library = new Library();
         book = library.getBooksInStockList().get(0);
         bookTitle = book.getName();
-        book2 = library.getBooksInStockList().get(9);
-        bookTitle2 = book2.getName();
+        for(Book b : library.getBooksInStockList()) {
+            if(!b.getName().equals(bookTitle)) {
+                book2 = b;
+                bookTitle2 = b.getName();
+                break;
+            }
+        }
     }
 
     @Test
-    public void BorrowBook_isBorrowedShouldBeTrueWhenBorrowed() {
+    public void borrowBook_isBorrowedShouldBeTrueWhenBorrowed() {
         library.borrowBook(bookTitle);
         assertTrue(book.isBorrowed());
     }
@@ -57,7 +62,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldResultInFalse_ifAddMoreBooksThen_maxBorrowedBooksAtTime_inArrayList() {
+    public void shouldResultInFalse_ifAddMoreBooksThen_maxBorrowedBooksAtSameTime_inArrayList() {
         ArrayList<Book> listBorrowedBooks = library.getBorrowedBooksList();
         
         for(int i = 0; i < Library.MAX_BORROWED_BOOKS_AT_SAME_TIME; i++) {
@@ -69,7 +74,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void returnMultipleBooksInOneDay() {
+    public void shouldResultInTrue_whenReturnMultipleBooksInOneDay() {
         ArrayList<Book> listBorrowedBooks = library.getBorrowedBooksList();
         
         for(int i = 0; i < Library.MAX_BORROWED_BOOKS_AT_SAME_TIME; i++) {
@@ -288,28 +293,29 @@ public class LibraryTest {
 
         System.setOut(System.out);
     }
-    
+
     @Test
-    public void cannotBorrowSameBookTwice() {
+    public void falseIf_BorrowBookAlreadyInBorrowedBookList() {
         library.borrowBook(bookTitle);
+        library.advanceDay();
         assertFalse(library.borrowBook(bookTitle));    
     }
 
     @Test
-    public void borrowOneBook_shouldResult_sizeOne(){
+    public void borrowOneBook_shouldResult_arrayListSizeEqualsOne(){
         library.borrowBook(bookTitle);
         assertEquals(1, library.getBorrowedBooksList().size());
     }
 
     @Test
-    public void borrowTwoBooksSameDay(){
+    public void borrowTwoBooksSameDay_shouldBeFalse(){
         library.borrowBook(bookTitle);
         assertFalse(library.borrowBook(bookTitle2));
 
     }
 
     @Test
-    public void BorrowBooksDifferentDay(){
+    public void borrowBooksDifferentDay_shouldBeTrue(){
         library.borrowBook(bookTitle);
         library.advanceDay();
         assertTrue(library.borrowBook(bookTitle2));

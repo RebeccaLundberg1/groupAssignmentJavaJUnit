@@ -19,7 +19,7 @@ public class Library {
     }
 
     public Boolean borrowBook(String title) {
-        if(isBorrowBookAvailable(title)) {
+        if(isAllowedToBorrow(title)) {
             for (int i = 0; i < booksInStockList.size(); i++) {
                 Book book = booksInStockList.get(i);
                 if (book.getName().equalsIgnoreCase(title)) {
@@ -34,7 +34,7 @@ public class Library {
         return false;
     }
 
-    private boolean isBorrowBookAvailable(String bookName) {
+    private boolean isAllowedToBorrow(String title) {
         if(borrowedBooksList.size() >= 5) {
             System.out.println("Tyvärr, du har redan lånat 5 böcker \n");
             return false;
@@ -46,7 +46,7 @@ public class Library {
                 System.out.println("Tyvärr, du har redan lånat en bok idag \n");
                 return false;
             }
-            if(book.getName().equals(bookName)) {
+            if(book.getName().equals(title)) {
                 System.out.println("Tyvärr, du har redan lånat denna boken \n");
                 return false;
             }
@@ -71,7 +71,7 @@ public class Library {
                 return true;
             }
         }
-        System.out.println(title + " isn´t found in borrowed books list");
+        System.out.println(title + " isn't found in borrowed books list");
         System.out.println();
         return false;
     }
@@ -92,6 +92,13 @@ public class Library {
     }
 
     public int extendTime(String title) {
+        for(int i = 0; i < borrowedBooksList.size(); i++) {
+            Book book = borrowedBooksList.get(i);
+            if(book.getDaysBorrowed() == 0) {
+                System.out.println("Tyvärr, du har redan lånat en bok idag \n");
+                return Integer.MIN_VALUE;
+            }
+        }
         for (int i = 0; i < borrowedBooksList.size(); i++) {
             Book book = borrowedBooksList.get(i);
             if (book.getName().equalsIgnoreCase(title)) {
